@@ -1,8 +1,52 @@
-Vue.component('productDetails', {
-    props: {
-        new: {
-            type: Boolean,
-            required: true
+Vue.component('product-review', {
+    template: `
+    <form class="review-form" @submit.prevent="onSubmit">
+        <h3> Make Your Review </h3>
+        <p>
+            <label for="name">Name: </label>
+            <input id="name" v-model="name">
+        </p>
+
+        <p>
+            <label for="review">Review: </label>
+            <textarea id="review" v-model="review"></textarea>
+        </p>
+        
+        <p>
+            <label for="rating">Rating: </label>
+            <select id="rating" v-model.number="rating" >
+                <option>5</option>
+                <option>4</option>
+                <option>3</option>
+                <option>2</option>
+                <option>1</option>
+            </select>
+        </p>
+
+        <p>
+            <input type="submit" value="Submit" id="submit" href="#">
+        </p>
+    </form>
+    `,
+    data() {
+        return {
+            name: null,
+            review: null,
+            rating: null,
+            errors: []
+        }
+    },
+    methods: {
+        onSubmit() {
+            let productReview = {
+                name: this.name,
+                review: this.review,
+                rating: this.rating,
+            }
+            this.$emit('review-submitted', productReview)
+            this.name = null
+            this.review = null
+            this.rating = null
         }
     }
 })
@@ -16,7 +60,8 @@ Vue.component('product', {
     },
 
     template: `
-    <div class="product">
+    <div>
+      <div class="product">
         <div class="product-image">
             <a v-bind:href="url">
                 <img v-bind:src="image">
@@ -44,10 +89,6 @@ Vue.component('product', {
                 </div>
 
                 <br>
-                <p>Sizes</p>
-                <ul>
-                    <li v-for="size in sizes">{{ size }}</li>
-                </ul>
             </div>
 
             <div id="buyDiv">
@@ -55,7 +96,23 @@ Vue.component('product', {
                 <button id="removeButton"  v-on:click="removeFromCart" :disabled="!inCart" ><strong> Remove one from cart </strong></button>
             </div>
         </div>
+
+        </div>
+
+      <div id="reviews">
+        <h2> Reviews </h2>
+        <p v-if="!reviews.length">There are no reviews yet.</p>
+        <ul id="review-item" v-for="review in reviews">
+            <h4 id="nameReview"> {{ review.name }} </h4>
+            <p>Review: {{ review.review }}</p>
+            <p>Rating: {{ review.rating }}</p>
+        </ul>
+      </div>
+      
+
+      <product-review @review-submitted="addReview"></product-review>
     </div>
+
     `,
 
     data() {
@@ -82,7 +139,7 @@ Vue.component('product', {
                     variantInitQtd: 0
                 }
             ],
-            sizes: ["P", "M", "G"],
+            reviews: [],
         }
     },
 
@@ -99,7 +156,10 @@ Vue.component('product', {
         },
         updateProduct: function (index) {
             this.selectedVariant = index
-        }
+        },
+        addReview: function (productReview) {
+            this.reviews.push(productReview)
+        },
     },
 
     computed: {

@@ -94,3 +94,51 @@
     height: 40px;
     margin-top: 5px;
 }
+
+.review-form {
+    margin-top: 100px;
+    position: center;
+    border: solid #ccc 1px;
+    text-align: center;
+    margin-left: 500px;
+    margin-right: 500px;
+}
+
+.review-form input{
+    width: 75%;
+}
+
+#submit {
+    background: #007FFF;
+    border-radius: 4px;
+    height: 30px;
+    width: 120px;
+    border: solid #007FFF 1px;
+    transition: 0.5s;
+    color: white;
+}
+
+#submit:hover{
+    background: #007FCA;
+}
+
+#submit:active{
+    background: blue;
+    border: inset;
+}
+
+textarea {
+    width: 70%;
+}
+
+#reviews {
+    text-align: center;
+    margin-top: 100px;
+}
+
+
+ul {
+    list-style-type: none;
+    padding-top: 20px;
+}
+
